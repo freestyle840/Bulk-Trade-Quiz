@@ -1,4 +1,4 @@
-# Bulk Trade Alpha Docs Quiz
+# Bulk Trade Alpha Quiz
 
 An interactive, mobile-friendly quiz website based on the Bulk Trade Alpha Docs.  
 Built with **pure HTML, CSS, and JavaScript** — no frameworks required.
