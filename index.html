@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bulk Trade Alpha Docs Quiz</title>
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #0f172a, #1e293b);
+      color: #fff;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+    }
+    .container {
+      width: 90%;
+      max-width: 650px;
+      background: #1e293b;
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+      margin-top: 50px;
+      animation: fadeIn 0.8s ease;
+    }
+    @keyframes fadeIn {
+      from {opacity: 0; transform: translateY(10px);}
+      to {opacity: 1; transform: translateY(0);}
+    }
+    h1 {
+      text-align: center;
+      color: #38bdf8;
+    }
+    .question {
+      font-size: 18px;
+      margin-bottom: 15px;
+      font-weight: 600;
+    }
+    .options label {
+      display: block;
+      background: #334155;
+      padding: 10px 15px;
+      border-radius: 10px;
+      margin: 8px 0;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .options label:hover {
+      background: #475569;
+    }
+    button {
+      width: 100%;
+      padding: 12px;
+      background: #38bdf8;
+      border: none;
+      color: #0f172a;
+      font-size: 16px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: 600;
+      margin-top: 15px;
+      transition: 0.3s;
+    }
+    button:hover {
+      background: #0ea5e9;
+    }
+    .result {
+      text-align: center;
+      font-size: 20px;
+      margin-top: 20px;
+      font-weight: bold;
+      color: #22d3ee;
+    }
+    .progress {
+      width: 100%;
+      background: #334155;
+      border-radius: 10px;
+      overflow: hidden;
+      height: 10px;
+      margin-bottom: 15px;
+    }
+    .progress-bar {
+      height: 10px;
+      background: #38bdf8;
+      width: 0%;
+      transition: width 0.4s ease;
+    }
+    .counter {
+      text-align: right;
+      font-size: 14px;
+      color: #94a3b8;
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h1>Bulk Trade Alpha Docs Quiz 💡</h1>
+    <div class="counter" id="counter"></div>
+    <div class="progress"><div class="progress-bar" id="progressBar"></div></div>
+    <div id="quiz"></div>
+    <button id="nextBtn" onclick="nextQuestion()">Next</button>
+    <div class="result" id="result"></div>
+    <button id="restartBtn" onclick="restartQuiz()" style="display:none;">Restart Quiz</button>
+  </div>
+
+  <script>
+    const quizData = [
+      {
+        question: "1️⃣ What is the main goal of the BULK Exchange?",
+        options: [
+          "A) To create a centralized trading hub for institutions",
+          "B) To achieve colocation-grade performance while keeping decentralization intact",
+          "C) To provide NFT minting and marketplace tools",
+          "D) To replace centralized exchanges entirely"
+        ],
+        correct: 1,
+        answer: "✅ Answer: B) To achieve colocation-grade performance while keeping decentralization intact"
+      },
+      {
+        question: "2️⃣ Which of the following sections are part of the BULK Exchange Alpha Docs?",
+        options: [
+          "A) Architecture, Order Propagation, Matching, and Finality",
+          "B) Governance, Voting, Staking, and Liquidity Pools",
+          "C) Mining, Wallet Management, and Node Setup",
+          "D) NFT Metadata, Royalties, and Minting"
+        ],
+        correct: 0,
+        answer: "✅ Answer: A) Architecture, Order Propagation, Matching, and Finality"
+      },
+      {
+        question: "3️⃣ What does the term 'Alpha Docs' indicate about BULK Exchange?",
+        options: [
+          "A) It’s a finalized and fully audited product",
+          "B) It’s in its testing or early development phase",
+          "C) It’s already integrated into major exchanges",
+          "D) It’s a public beta version with user incentives"
+        ],
+        correct: 1,
+        answer: "✅ Answer: B) It’s in its testing or early development phase"
+      },
+      {
+        question: "4️⃣ Which of the following features does BULK Exchange claim to maintain while delivering high performance?",
+        options: [
+          "A) Low decentralization and centralized control",
+          "B) Decentralization, censorship resistance, and permissionless access",
+          "C) Custodial order management and off-chain execution",
+          "D) Private order books and restricted access"
+        ],
+        correct: 1,
+        answer: "✅ Answer: B) Decentralization, censorship resistance, and permissionless access"
+      }
+    ];
+
+    let currentQuestion = 0;
+    let score = 0;
+
+    function loadQuestion() {
+      const quizContainer = document.getElementById("quiz");
+      const q = quizData[currentQuestion];
+      document.getElementById("counter").innerText = `Question ${currentQuestion + 1} of ${quizData.length}`;
+      document.getElementById("progressBar").style.width = `${((currentQuestion) / quizData.length) * 100}%`;
+
+      quizContainer.innerHTML = `
+        <div class="question">${q.question}</div>
+        <div class="options">
+          ${q.options.map(
+            (opt, i) => `<label><input type="radio" name="answer" value="${i}"> ${opt}</label>`
+          ).join('')}
+        </div>
+      `;
+    }
+
+    function nextQuestion() {
+      const selected = document.querySelector('input[name="answer"]:checked');
+      if (!selected) {
+        alert("Please select an answer before proceeding!");
+        return;
+      }
+
+      if (parseInt(selected.value) === quizData[currentQuestion].correct) {
+        score++;
+      }
+
+      currentQuestion++;
+      if (currentQuestion < quizData.length) {
+        loadQuestion();
+      } else {
+        showResult();
+      }
+    }
+
+    function showResult() {
+      document.getElementById("quiz").style.display = "none";
+      document.getElementById("nextBtn").style.display = "none";
+      document.getElementById("counter").style.display = "none";
+      document.getElementById("progressBar").style.width = "100%";
+
+      let answerList = quizData.map(q => `<p>${q.answer}</p>`).join('');
+      document.getElementById("result").innerHTML =
+        `🎯 You scored ${score} out of ${quizData.length}!<br><br>${answerList}`;
+      document.getElementById("restartBtn").style.display = "block";
+    }
+
+    function restartQuiz() {
+      currentQuestion = 0;
+      score = 0;
+      document.getElementById("quiz").style.display = "block";
+      document.getElementById("nextBtn").style.display = "block";
+      document.getElementById("counter").style.display = "block";
+      document.getElementById("result").innerHTML = "";
+      document.getElementById("restartBtn").style.display = "none";
+      loadQuestion();
+    }
+
+    loadQuestion();
+  </script>
+
+</body>
+</html>
